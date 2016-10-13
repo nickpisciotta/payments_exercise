@@ -11,6 +11,18 @@ class Api::V1::PaymentsController < ApiBaseController
     end
   end
 
+  def index
+    loan = Loan.find(params[:loan_id])
+    payments = loan.payments
+    render json: payments
+  end
+
+  def show
+    loan = Loan.find(params[:loan_id])
+    payment = loan.payments.find(params[:id])
+    render json: payment
+  end
+
   private
     def payment_params
       params.require(:payment).permit(:amount)
