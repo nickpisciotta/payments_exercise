@@ -28,4 +28,24 @@ RSpec.describe "Create payment for a loan", type: :request do
     end
   end
 
+  context "invalid payment input data" do
+    it "returns validation error messages" do
+        post "/api/v1/loans/#{loan.id}/payments", payment: { amount: "Word" }
+
+        expect(response.status).to eq 400
+
+        expect(json["errors"]).to eq(["Amount is not a number"])
+
+        post "/api/v1/loans/#{loan.id}/payments", payment: { amount: ""}
+
+        expect(json["errors"]).to eq(["Amount is not a number",
+        "Amount can't be blank"])
+
+        post "/api/v1/loans/#{loan.id}/payments", payment: { amount: 0}
+
+        expect(json["errors"]).to eq(["Amount must be greater than 0"])
+    end
+  end
+
+
 end
