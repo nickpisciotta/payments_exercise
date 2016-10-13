@@ -10,13 +10,11 @@ RSpec.describe "Create payment for a loan", type: :request do
 
       expect(response).to have_http_status(:created)
 
-      parsed_response = JSON.parse(response.body)
       payment = loan.payments.last
 
-      expect(parsed_response['id']).to eq payment.id
-      expect(parsed_response['amount']).to eq "50.0"
-      byebug
-      expect(parsed_response['date']).to eq payment.date
+      expect(json['id']).to eq payment.id
+      expect(json['amount']).to eq "50.0"
+      expect(json['date']).to eq payment.date
     end
   end
 end
